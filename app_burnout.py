@@ -73,10 +73,10 @@ html, body, * { font-family: 'Inter', sans-serif; color: #F0F0F0; }
     background: linear-gradient(90deg, #FF6B6B, #FFD93D) !important;
 }
 [data-testid="stNumberInput"] input {
-    background: rgba(255,255,255,0.08) !important;
+    background: #ffffff !important;
     border: 1px solid rgba(255,255,255,0.18) !important;
     border-radius: 10px !important;
-    color: #F0F0F0 !important;
+    color: #1a1a2e !important;
     font-size: 1.1rem !important;
 }
 [data-testid="stSlider"] label, [data-testid="stNumberInput"] label {
@@ -207,7 +207,7 @@ try:
     log_model, scaler = load_model()
     model_loaded = True
 except FileNotFoundError:
-    st.warning("⚠️  burnout_level_mdel.pkl 또는 burnout_scaler.pkl 을 찾을 수 없어 데모 모드로 실행됩니다.")
+    pass
     model_loaded = False
 
 burnout_mapping = {"High": 2, "Medium": 1, "Low": 0}
