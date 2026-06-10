@@ -197,9 +197,9 @@ st.markdown("""
 # ── 모델 로드 ─────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
-    with open("model.pkl", "rb") as f:
+    with open("burnout_level_mdel.pkl", "rb") as f:
         log_model = pickle.load(f)
-    with open("scaler.pkl", "rb") as f:
+    with open("burnout_scaler.pkl", "rb") as f:
         scaler = pickle.load(f)
     return log_model, scaler
 
@@ -207,7 +207,7 @@ try:
     log_model, scaler = load_model()
     model_loaded = True
 except FileNotFoundError:
-    st.warning("⚠️  model.pkl 또는 scaler.pkl 을 찾을 수 없어 데모 모드로 실행됩니다.")
+    st.warning("⚠️  burnout_level_mdel.pkl 또는 burnout_scaler.pkl 을 찾을 수 없어 데모 모드로 실행됩니다.")
     model_loaded = False
 
 burnout_mapping = {"High": 2, "Medium": 1, "Low": 0}
