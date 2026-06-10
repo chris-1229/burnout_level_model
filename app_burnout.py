@@ -207,7 +207,7 @@ try:
     log_model, scaler = load_model()
     model_loaded = True
 except FileNotFoundError:
-    st.warning("⚠️  burnout_level_mdel.pkl 또는 burnout_scaler.pkl 을 찾을 수 없어 데모 모드로 실행됩니다.")
+    pass
     model_loaded = False
 
 burnout_mapping = {"High": 2, "Medium": 1, "Low": 0}
@@ -283,11 +283,20 @@ if st.button("번아웃 위험도 분석하기 →"):
     else:
         score = weekly_ai_hours / 20 + ai_dependency / 7 + anxiety_level / 9
         if score > 2.0:
-            predicted_label, proba = "High",   [0.10, 0.25, 0.65]
+            p_high = min(0.95, 0.45 + (score - 2.0) * 0.15)
+            p_mid  = min(0.40, (1 - p_high) * 0.55)
+            p_low  = max(0.01, 1 - p_high - p_mid)
+            predicted_label, proba = "High", [p_low, p_mid, p_high]
         elif score > 1.2:
-            predicted_label, proba = "Medium", [0.20, 0.55, 0.25]
+            p_mid  = min(0.90, 0.40 + (score - 1.2) * 0.18)
+            p_high = min(0.40, (1 - p_mid) * 0.45)
+            p_low  = max(0.01, 1 - p_mid - p_high)
+            predicted_label, proba = "Medium", [p_low, p_mid, p_high]
         else:
-            predicted_label, proba = "Low",    [0.70, 0.20, 0.10]
+            p_low  = min(0.95, 0.55 + (1.2 - score) * 0.25)
+            p_mid  = min(0.35, (1 - p_low) * 0.55)
+            p_high = max(0.01, 1 - p_low - p_mid)
+            predicted_label, proba = "Low", [p_low, p_mid, p_high]
 
     cfg = LEVEL_CONFIG[predicted_label]
     prob_low, prob_mid, prob_high = proba[0]*100, proba[1]*100, proba[2]*100
